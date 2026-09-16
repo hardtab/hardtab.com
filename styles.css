@@ -315,6 +315,22 @@ h2 {
   border-top: 5px solid var(--cobalt);
 }
 
+.product-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.product-icon {
+  display: block;
+  width: 96px;
+  height: 96px;
+  flex: none;
+  border-radius: 22px;
+  box-shadow: 0 12px 28px rgba(15, 22, 46, 0.14);
+}
+
 .product-category {
   margin: 0;
   color: var(--cobalt);
@@ -325,7 +341,7 @@ h2 {
 }
 
 .product-card h3 {
-  margin: 44px 0 18px;
+  margin: 28px 0 18px;
   font-size: clamp(38px, 4vw, 56px);
   line-height: 1;
   letter-spacing: -0.055em;
@@ -658,7 +674,13 @@ footer p span {
   }
 
   .product-card h3 {
-    margin-top: 34px;
+    margin-top: 26px;
+  }
+
+  .product-icon {
+    width: 76px;
+    height: 76px;
+    border-radius: 18px;
   }
 
   .product-card a {
