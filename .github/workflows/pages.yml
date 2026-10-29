@@ -1,0 +1,50 @@
+name: Publish hardtab.com Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hardtab-com-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    if: github.repository == 'hardtab/hardtab.com' && github.ref == 'refs/heads/main'
+    runs-on:
+      group: production-isolated-builds
+      labels: hardtab-linux-build
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v6
+
+      - name: Prepare static site
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          cp .nojekyll CNAME 404.html index.html privacy.html robots.txt script.js sitemap.xml styles.css terms.html _site/
+          cp -R assets _site/assets
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
